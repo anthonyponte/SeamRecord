@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="agregar">Add</string>
+    <string name="app_name">SeamRecord</string>
+    <string name="altura_cierre">Seam Length (L)</string>
+    <string name="cancelar">Cancel</string>
+    <string name="cero">0</string>
+    <string name="check">Check</string>
+    <string name="compacidad">Compactness (%C)</string>
+    <string name="eliminar">Remove</string>
+    <string name="eliminar_registros_seleccionados">Are you sure you want to delete %1$d records?</string>
+    <string name="eliminar_seleccionados">Delete %1$d records</string>
+    <string name="eliminar_todo">Delete All</string>
+    <string name="eliminar_todos">Delete all records</string>
+    <string name="eliminar_todos_registros">Are you sure you want to delete all records?</string>
+    <string name="espacio_libre">Free Space (FS)</string>
+    <string name="espesor_cierre">Seam Thickness (ST)</string>
+    <string name="espesor_cuerpo">Body Thickness (BT)</string>
+    <string name="espesor_tapa">Cover Thickness (CT)</string>
+    <string name="fecha">Date</string>
+    <string name="gancho_cuerpo">Body Hook (BH)</string>
+    <string name="gancho_tapa">Cover Hook (CH)</string>
+    <string name="guardar">Save</string>
+    <string name="hora">Time</string>
+    <string name="limpiar">Clear</string>
+    <string name="no_hay_registros">No records</string>
+    <string name="penetracion_gancho_cuerpo">Body Hook Penetration (%P)</string>
+    <string name="registro">Record</string>
+    <string name="registros_seleccionados_eliminados">%1$d records deleted</string>
+    <string name="registros_eliminados">All records deleted</string>
+    <string name="superposicion">Overlap Percent (%O)</string>
+    <string name="traslape">Overlap (O)</string>
+</resources>

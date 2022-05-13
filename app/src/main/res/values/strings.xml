@@ -1,0 +1,32 @@
+<resources>
+    <string name="agregar">Agregar</string>
+    <string name="app_name">SeamRecord</string>
+    <string name="altura_cierre">Altura Cierre (A)</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="cero">0</string>
+    <string name="check">Check</string>
+    <string name="compacidad">Compacidad (%C)</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="eliminar_registros_seleccionados">¿Seguro que desea eliminar los %1$d registros?</string>
+    <string name="eliminar_seleccionados">Eliminar %1$d registro(s)</string>
+    <string name="eliminar_todo">Eliminar todo</string>
+    <string name="eliminar_todos">Eliminar todos los registros</string>
+    <string name="eliminar_todos_registros">¿Seguro que desea eliminar todos los registros?</string>
+    <string name="espacio_libre">Espacio Libre (EL)</string>
+    <string name="espesor_cierre">Espesor Cierre (E)</string>
+    <string name="espesor_cuerpo">Espesor Cuerpo (Ec)</string>
+    <string name="espesor_tapa">Espesor Tapa (Et)</string>
+    <string name="fecha">Fecha</string>
+    <string name="gancho_cuerpo">Gancho Cuerpo (Gc)</string>
+    <string name="gancho_tapa">Gancho Tapa (Gt)</string>
+    <string name="guardar">Guardar</string>
+    <string name="hora">Hora</string>
+    <string name="limpiar">Limpiar</string>
+    <string name="no_hay_registros">No hay registros</string>
+    <string name="penetracion_gancho_cuerpo">Penetración Gancho Cuerpo (%P)</string>
+    <string name="registro">Registro</string>
+    <string name="registros_seleccionados_eliminados">Se eliminaron %1$d registros</string>
+    <string name="registros_eliminados">Se eliminaron todos los registros</string>
+    <string name="superposicion">Superposición (%S)</string>
+    <string name="traslape">Traslape (T)</string>
+</resources>
