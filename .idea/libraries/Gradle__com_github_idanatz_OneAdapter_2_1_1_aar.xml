@@ -1,9 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.github.idanatz:OneAdapter:2.1.1@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/800027765fc99becdb4a2c4197556eef/transformed/OneAdapter-2.1.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/800027765fc99becdb4a2c4197556eef/transformed/OneAdapter-2.1.1/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/800027765fc99becdb4a2c4197556eef/transformed/OneAdapter-2.1.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/85528427a071337d5d9421b7b62c1186/transformed/OneAdapter-2.1.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/16602779b96b86184a20f0c2aa63e013/transformed/OneAdapter-2.1.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/16602779b96b86184a20f0c2aa63e013/transformed/OneAdapter-2.1.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/16602779b96b86184a20f0c2aa63e013/transformed/OneAdapter-2.1.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
