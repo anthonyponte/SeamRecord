@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -14,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.MenuProvider
 import androidx.core.view.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,6 +66,107 @@ class ListActivity : AppCompatActivity() {
         colorPrimary = MaterialColors.getColor(root, R.attr.colorPrimary)
         colorPrimaryVariant = MaterialColors.getColor(root, R.attr.colorPrimaryVariant)
 
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_list, menu)
+            }
+
+            override fun onPrepareMenu(menu: Menu) {
+                menu.findItem(R.id.eliminar)?.isVisible = visibility
+                menu.findItem(R.id.eliminar_todo)?.isVisible = visibility
+                super.onPrepareMenu(menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        oneAdapter.modules.itemSelectionModule?.actions?.clearSelection()
+                        return true
+                    }
+
+                    R.id.eliminar -> {
+                        val seleccionados =
+                            oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems()?.size
+
+                        val builder = AlertDialog.Builder(applicationContext)
+                        builder.setTitle(getString(R.string.eliminar_seleccionados, seleccionados))
+                        builder.setMessage(
+                            getString(
+                                R.string.eliminar_registros_seleccionados,
+                                seleccionados
+                            )
+                        )
+                        builder.setPositiveButton(
+                            R.string.eliminar
+                        ) { dialog, _ ->
+
+                            val selected =
+                                oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
+
+                            val iterator = selected.iterator()
+
+                            while (iterator.hasNext()) {
+                                val record = iterator.next() as Record
+                                roomModel.delete(record)
+                            }
+
+                            oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
+                            dialog.dismiss()
+
+                            Snackbar.make(
+                                binding.root,
+                                getString(
+                                    R.string.registros_seleccionados_eliminados,
+                                    seleccionados
+                                ),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                        builder.setNegativeButton(
+                            R.string.cancelar
+                        ) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        builder.create()
+                        builder.show()
+
+                        return true
+                    }
+
+                    R.id.eliminar_todo -> {
+                        val builder = AlertDialog.Builder(applicationContext)
+                        builder.setTitle(getString(R.string.eliminar_todos))
+                        builder.setMessage(getString(R.string.eliminar_todos_registros))
+                        builder.setPositiveButton(
+                            R.string.eliminar_todo
+                        ) { dialog, _ ->
+                            roomModel.deleteAll()
+
+                            oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
+                            dialog.dismiss()
+
+                            Snackbar.make(
+                                binding.root,
+                                getString(R.string.registros_eliminados),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
+                        builder.setNegativeButton(
+                            R.string.cancelar
+                        ) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        builder.create()
+                        builder.show()
+
+                        return true
+                    }
+
+                    else -> true
+                }
+            }
+        })
+
         binding.listContent.recycler.addItemDecoration(
             DividerItemDecoration(
                 this, LinearLayoutManager.VERTICAL
@@ -94,105 +197,8 @@ class ListActivity : AppCompatActivity() {
             itemSelectionModule = RecordSelectionModuleImpl()
         }
 
-        roomModel.getAll.observe(this, { records ->
+        roomModel.getAll.observe(this) { records ->
             oneAdapter.setItems(records)
-        })
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_list, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.findItem(R.id.eliminar)?.isVisible = visibility
-        menu?.findItem(R.id.eliminar_todo)?.isVisible = visibility
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                oneAdapter.modules.itemSelectionModule?.actions?.clearSelection()
-                return true
-            }
-
-            R.id.eliminar -> {
-                val seleccionados =
-                    oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems()?.size
-
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle(getString(R.string.eliminar_seleccionados, seleccionados))
-                builder.setMessage(
-                    getString(
-                        R.string.eliminar_registros_seleccionados,
-                        seleccionados
-                    )
-                )
-                builder.setPositiveButton(
-                    R.string.eliminar
-                ) { dialog, _ ->
-
-                    val selected =
-                        oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
-
-                    val iterator = selected.iterator()
-
-                    while (iterator.hasNext()) {
-                        val record = iterator.next() as Record
-                        roomModel.delete(record)
-                    }
-
-                    oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
-                    dialog.dismiss()
-
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.registros_seleccionados_eliminados, seleccionados),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-                builder.setNegativeButton(
-                    R.string.cancelar
-                ) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                builder.create()
-                builder.show()
-
-                return true
-            }
-
-            R.id.eliminar_todo -> {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle(getString(R.string.eliminar_todos))
-                builder.setMessage(getString(R.string.eliminar_todos_registros))
-                builder.setPositiveButton(
-                    R.string.eliminar_todo
-                ) { dialog, _ ->
-                    roomModel.deleteAll()
-
-                    oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
-                    dialog.dismiss()
-
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.registros_eliminados),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-                builder.setNegativeButton(
-                    R.string.cancelar
-                ) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                builder.create()
-                builder.show()
-
-                return true
-            }
-
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
