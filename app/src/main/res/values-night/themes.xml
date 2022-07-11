@@ -30,10 +30,10 @@
         <item name="colorOnBackground">@color/md_white_1000</item>
         <item name="colorOnSurface">@color/md_white_1000</item>
         <item name="colorOnError">@color/md_grey_800</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar" >true</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
         <!--Custom-->
-        <item name="colorSucces">@color/md_green_200</item>
+        <item name="colorSuccess">@color/md_green_200</item>
         <item name="colorWarning">@color/md_yellow_200</item>
     </style>
 </resources>

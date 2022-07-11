@@ -41,7 +41,7 @@
         <item name="colorOnSurface">@color/md_black_1000</item>
         <item name="colorOnError">@color/md_white_1000</item>
         <!--Custom-->
-        <item name="colorSucces">@color/md_green_800</item>
+        <item name="colorSuccess">@color/md_green_800</item>
         <item name="colorWarning">@color/md_yellow_800</item>
         <!--Material type attributes-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.SeamRecord.Headline1</item>

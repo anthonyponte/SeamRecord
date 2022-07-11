@@ -30,7 +30,7 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val colorError = MaterialColors.getColor(root, R.attr.colorError)
-        val colorSucces = MaterialColors.getColor(root, R.attr.colorSucces)
+        val colorSuccess = MaterialColors.getColor(root, R.attr.colorSuccess)
         val colorWarning = MaterialColors.getColor(root, R.attr.colorWarning)
 
         if (savedInstanceState == null) {
@@ -56,13 +56,13 @@ class DetailActivity : AppCompatActivity() {
             binding.detailContent.detailMeasures.tvCompacidad.text = record.compacidad.toString()
 
             if (record.traslape >= 1) {
-                binding.detailContent.detailMeasures.tvTraslape.setTextColor(colorSucces)
+                binding.detailContent.detailMeasures.tvTraslape.setTextColor(colorSuccess)
             } else if (record.traslape < 1 && record.traslape != 0.0) {
                 binding.detailContent.detailMeasures.tvTraslape.setTextColor(colorError)
             }
 
             if (record.superposicion >= 80) {
-                binding.detailContent.detailMeasures.tvSuperposicion.setTextColor(colorSucces)
+                binding.detailContent.detailMeasures.tvSuperposicion.setTextColor(colorSuccess)
             } else if (record.superposicion < 80 && record.superposicion >= 45 && record.superposicion != 0.0) {
                 binding.detailContent.detailMeasures.tvSuperposicion.setTextColor(colorWarning)
             } else if (record.superposicion < 45 && record.superposicion != 0.0) {
@@ -70,7 +70,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
             if (record.penetracion >= 95) {
-                binding.detailContent.detailMeasures.tvPenetracion.setTextColor(colorSucces)
+                binding.detailContent.detailMeasures.tvPenetracion.setTextColor(colorSuccess)
             } else if (record.penetracion < 95 && record.penetracion > 70) {
                 binding.detailContent.detailMeasures.tvPenetracion.setTextColor(colorWarning)
             } else if (record.penetracion <= 70 && record.penetracion != 0.0) {
@@ -80,11 +80,11 @@ class DetailActivity : AppCompatActivity() {
             if (record.espacioLibre > 0.19) {
                 binding.detailContent.detailMeasures.tvEspacioLibre.setTextColor(colorError)
             } else if (record.espacioLibre <= 0.19 && record.espacioLibre != 0.0) {
-                binding.detailContent.detailMeasures.tvEspacioLibre.setTextColor(colorSucces)
+                binding.detailContent.detailMeasures.tvEspacioLibre.setTextColor(colorSuccess)
             }
 
             if (record.compacidad >= 85) {
-                binding.detailContent.detailMeasures.tvCompacidad.setTextColor(colorSucces)
+                binding.detailContent.detailMeasures.tvCompacidad.setTextColor(colorSuccess)
             } else if (record.compacidad < 85 && record.compacidad >= 75) {
                 binding.detailContent.detailMeasures.tvCompacidad.setTextColor(colorWarning)
             } else if (record.compacidad < 75 && record.compacidad >= 1) {

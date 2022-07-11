@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var colorOnBackground: Int = 0
     private var colorError: Int = 0
-    private var colorSucces: Int = 0
+    private var colorSuccess: Int = 0
     private var colorWarning: Int = 0
 
     companion object {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         colorOnBackground = MaterialColors.getColor(root, R.attr.colorOnBackground)
         colorError = MaterialColors.getColor(root, R.attr.colorError)
-        colorSucces = MaterialColors.getColor(root, R.attr.colorSucces)
+        colorSuccess = MaterialColors.getColor(root, R.attr.colorSuccess)
         colorWarning = MaterialColors.getColor(root, R.attr.colorWarning)
 
         binding.mainContent.etEspesorCuerpo.addTextChangedListener(watcher)
@@ -144,13 +144,13 @@ class MainActivity : AppCompatActivity() {
                 binding.mainContent.mainMeasures.tvCompacidad.text = format(compacidad)
 
                 if (traslape >= 1) {
-                    binding.mainContent.mainMeasures.tvTraslape.setTextColor(colorSucces)
+                    binding.mainContent.mainMeasures.tvTraslape.setTextColor(colorSuccess)
                 } else if (traslape < 1 && traslape != 0.0) {
                     binding.mainContent.mainMeasures.tvTraslape.setTextColor(colorError)
                 }
 
                 if (superposicion >= 80) {
-                    binding.mainContent.mainMeasures.tvSuperposicion.setTextColor(colorSucces)
+                    binding.mainContent.mainMeasures.tvSuperposicion.setTextColor(colorSuccess)
                 } else if (superposicion < 80 && superposicion >= 45 && superposicion != 0.0) {
                     binding.mainContent.mainMeasures.tvSuperposicion.setTextColor(colorWarning)
                 } else if (superposicion < 45 && superposicion != 0.0) {
@@ -158,7 +158,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (penetracion >= 95) {
-                    binding.mainContent.mainMeasures.tvPenetracion.setTextColor(colorSucces)
+                    binding.mainContent.mainMeasures.tvPenetracion.setTextColor(colorSuccess)
                 } else if (penetracion < 95 && penetracion > 70) {
                     binding.mainContent.mainMeasures.tvPenetracion.setTextColor(colorWarning)
                 } else if (penetracion <= 70 && penetracion != 0.0) {
@@ -168,11 +168,11 @@ class MainActivity : AppCompatActivity() {
                 if (espacioLibre > 0.19) {
                     binding.mainContent.mainMeasures.tvEspacioLibre.setTextColor(colorError)
                 } else if (espacioLibre <= 0.19 && espacioLibre != 0.0) {
-                    binding.mainContent.mainMeasures.tvEspacioLibre.setTextColor(colorSucces)
+                    binding.mainContent.mainMeasures.tvEspacioLibre.setTextColor(colorSuccess)
                 }
 
                 if (compacidad >= 85) {
-                    binding.mainContent.mainMeasures.tvCompacidad.setTextColor(colorSucces)
+                    binding.mainContent.mainMeasures.tvCompacidad.setTextColor(colorSuccess)
                 } else if (compacidad < 85 && compacidad >= 75) {
                     binding.mainContent.mainMeasures.tvCompacidad.setTextColor(colorWarning)
                 } else if (compacidad < 75 && compacidad >= 1) {
