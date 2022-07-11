@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
@@ -181,8 +182,6 @@ class ListActivity : AppCompatActivity() {
                         intent?.getSerializableExtra(MainActivity.RECORD_VALUE) as Record
 
                     roomModel.insert(inspection)
-
-
                 }
             }
 

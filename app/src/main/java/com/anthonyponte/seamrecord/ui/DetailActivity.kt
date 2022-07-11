@@ -3,13 +3,18 @@ package com.anthonyponte.seamrecord.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
+import androidx.core.view.MenuProvider
 import com.anthonyponte.seamrecord.R
 import com.anthonyponte.seamrecord.viewmodel.Record
 import com.anthonyponte.seamrecord.databinding.ActivityDetailBinding
 import com.anthonyponte.seamrecord.viewmodel.RecordViewModel
 import com.google.android.material.color.MaterialColors
+import kotlinx.coroutines.processNextEventInCurrentThread
 import java.text.DateFormat
 import java.util.*
 
@@ -33,12 +38,26 @@ class DetailActivity : AppCompatActivity() {
         val colorSuccess = MaterialColors.getColor(root, R.attr.colorSuccess)
         val colorWarning = MaterialColors.getColor(root, R.attr.colorWarning)
 
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {}
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        navigateUpTo(Intent(applicationContext, ListActivity::class.java))
+                        return true
+                    }
+                    else -> true
+                }
+            }
+        })
+
         if (savedInstanceState == null) {
             val record = intent.getSerializableExtra(RECORD_VALUE) as Record
             recordModel.postRecord(record)
         }
 
-        recordModel.record.observe(this, { record ->
+        recordModel.record.observe(this) { record ->
             supportActionBar?.title =
                 DateFormat.getDateTimeInstance().format(Date.from(record.fechaCreacion))
             binding.detailContent.tvEspesorCuerpo.text = record.espesorCuerpo.toString()
@@ -90,16 +109,6 @@ class DetailActivity : AppCompatActivity() {
             } else if (record.compacidad < 75 && record.compacidad >= 1) {
                 binding.detailContent.detailMeasures.tvCompacidad.setTextColor(colorError)
             }
-        })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navigateUpTo(Intent(this, ListActivity::class.java))
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }

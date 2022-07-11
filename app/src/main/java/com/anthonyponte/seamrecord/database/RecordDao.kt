@@ -13,11 +13,11 @@ interface RecordDao {
     fun getAll(): Flow<List<Record>>
 
     @Insert
-    fun insert(record: Record)
+    suspend fun insert(record: Record)
 
     @Delete
-    fun delete(record: Record)
+    suspend fun delete(record: Record)
 
     @Query("DELETE FROM records")
-    fun deleteAll()
+    suspend fun deleteAll()
 }
