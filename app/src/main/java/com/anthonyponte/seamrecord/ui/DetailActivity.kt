@@ -7,14 +7,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.core.view.MenuProvider
 import com.anthonyponte.seamrecord.R
 import com.anthonyponte.seamrecord.viewmodel.Record
 import com.anthonyponte.seamrecord.databinding.ActivityDetailBinding
 import com.anthonyponte.seamrecord.viewmodel.RecordViewModel
 import com.google.android.material.color.MaterialColors
-import kotlinx.coroutines.processNextEventInCurrentThread
 import java.text.DateFormat
 import java.util.*
 
