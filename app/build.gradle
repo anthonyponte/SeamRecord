@@ -6,7 +6,7 @@ plugins {
 
 android {
     compileSdkVersion 33
-    buildToolsVersion "30.0.3"
+    buildToolsVersion '33.0.0'
 
     defaultConfig {
         applicationId "com.anthonyponte.seamrecord"
@@ -24,13 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 
     buildFeatures {
         viewBinding true
@@ -42,7 +35,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation "androidx.activity:activity-ktx:1.5.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.10"
 
     // UI
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -52,9 +44,11 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
     androidTestImplementation "androidx.room:room-testing:2.4.2"
+    annotationProcessor 'androidx.room:room-compiler:2.4.2'
 
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.0"
     implementation "androidx.lifecycle:lifecycle-common-java8:2.5.0"
 
@@ -64,5 +58,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation "com.github.idanatz:OneAdapter:2.1.1"
-    annotationProcessor 'androidx.room:room-compiler:2.4.2'
 }
