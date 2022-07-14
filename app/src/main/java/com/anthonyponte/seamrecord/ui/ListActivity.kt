@@ -27,6 +27,7 @@ import com.anthonyponte.seamrecord.viewmodel.RecordViewModel
 import com.anthonyponte.seamrecord.viewmodel.RoomViewModel
 import com.anthonyponte.seamrecord.viewmodel.RecordViewModelFactory
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.idanatz.oneadapter.OneAdapter
 import com.idanatz.oneadapter.external.event_hooks.ClickEventHook
@@ -88,76 +89,74 @@ class ListActivity : AppCompatActivity() {
                         val seleccionados =
                             oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems()?.size
 
-                        val builder = AlertDialog.Builder(applicationContext)
-                        builder.setTitle(getString(R.string.eliminar_seleccionados, seleccionados))
-                        builder.setMessage(
-                            getString(
-                                R.string.eliminar_registros_seleccionados,
-                                seleccionados
-                            )
-                        )
-                        builder.setPositiveButton(
-                            R.string.eliminar
-                        ) { dialog, _ ->
-
-                            val selected =
-                                oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
-
-                            val iterator = selected.iterator()
-
-                            while (iterator.hasNext()) {
-                                val record = iterator.next() as Record
-                                roomModel.delete(record)
-                            }
-
-                            oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
-                            dialog.dismiss()
-
-                            Snackbar.make(
-                                binding.root,
+                        MaterialAlertDialogBuilder(this@ListActivity)
+                            .setTitle(getString(R.string.eliminar_seleccionados, seleccionados))
+                            .setMessage(
                                 getString(
-                                    R.string.registros_seleccionados_eliminados,
+                                    R.string.eliminar_registros_seleccionados,
                                     seleccionados
-                                ),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-                        builder.setNegativeButton(
-                            R.string.cancelar
-                        ) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        builder.create()
-                        builder.show()
+                                )
+                            )
+                            .setPositiveButton(
+                                R.string.eliminar
+                            ) { dialog, _ ->
+
+                                val selected =
+                                    oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
+
+                                val iterator = selected.iterator()
+
+                                while (iterator.hasNext()) {
+                                    val record = iterator.next() as Record
+                                    roomModel.delete(record)
+                                }
+
+                                oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
+                                dialog.dismiss()
+
+                                Snackbar.make(
+                                    binding.root,
+                                    getString(
+                                        R.string.registros_seleccionados_eliminados,
+                                        seleccionados
+                                    ),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                            .setNeutralButton(
+                                R.string.cancelar
+                            ) { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
 
                         return true
                     }
 
                     R.id.eliminar_todo -> {
-                        val builder = AlertDialog.Builder(applicationContext)
-                        builder.setTitle(getString(R.string.eliminar_todos))
-                        builder.setMessage(getString(R.string.eliminar_todos_registros))
-                        builder.setPositiveButton(
-                            R.string.eliminar_todo
-                        ) { dialog, _ ->
-                            roomModel.deleteAll()
+                        MaterialAlertDialogBuilder(this@ListActivity)
+                            .setTitle(getString(R.string.eliminar_todos))
+                            .setMessage(getString(R.string.eliminar_todos_registros))
+                            .setPositiveButton(
+                                R.string.eliminar_todo
+                            ) { dialog, _ ->
+                                roomModel.deleteAll()
 
-                            oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
-                            dialog.dismiss()
+                                oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
+                                dialog.dismiss()
 
-                            Snackbar.make(
-                                binding.root,
-                                getString(R.string.registros_eliminados),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-                        builder.setNegativeButton(
-                            R.string.cancelar
-                        ) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        builder.create()
-                        builder.show()
+                                Snackbar.make(
+                                    binding.root,
+                                    getString(R.string.registros_eliminados),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                            .setNegativeButton(
+                                R.string.cancelar
+                            ) { dialog, _ ->
+                                dialog.dismiss()
+                            }
+                            .show()
 
                         return true
                     }
