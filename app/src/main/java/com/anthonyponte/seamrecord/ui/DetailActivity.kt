@@ -48,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
                     else -> true
                 }
             }
-        })
+        }, this)
 
         if (savedInstanceState == null) {
             val record = intent.getSerializableExtra(RECORD_VALUE) as Record

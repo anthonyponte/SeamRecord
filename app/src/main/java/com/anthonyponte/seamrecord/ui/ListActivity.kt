@@ -13,17 +13,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.MenuProvider
-import androidx.core.view.get
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anthonyponte.seamrecord.R
 import com.anthonyponte.seamrecord.viewmodel.Record
 import com.anthonyponte.seamrecord.SeamRecordApp
 import com.anthonyponte.seamrecord.databinding.ActivityListBinding
-import com.anthonyponte.seamrecord.viewmodel.RecordViewModel
 import com.anthonyponte.seamrecord.viewmodel.RoomViewModel
 import com.anthonyponte.seamrecord.viewmodel.RecordViewModelFactory
 import com.google.android.material.color.MaterialColors
@@ -50,7 +47,8 @@ class ListActivity : AppCompatActivity() {
     private var colorSurface: Int = 0
     private var colorPrimary: Int = 0
     private var colorPrimaryVariant: Int = 0
-    private var visibility: Boolean = false
+    private var visibleDelete: Boolean = false
+    private var visibleDeleteAll: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +71,8 @@ class ListActivity : AppCompatActivity() {
             }
 
             override fun onPrepareMenu(menu: Menu) {
-                menu.findItem(R.id.eliminar)?.isVisible = visibility
-                menu.findItem(R.id.eliminar_todo)?.isVisible = visibility
+                menu.findItem(R.id.eliminar)?.isVisible = visibleDelete
+                menu.findItem(R.id.eliminar_todo)?.isVisible = visibleDeleteAll
                 super.onPrepareMenu(menu)
             }
 
@@ -100,7 +98,6 @@ class ListActivity : AppCompatActivity() {
                             .setPositiveButton(
                                 R.string.eliminar
                             ) { dialog, _ ->
-
                                 val selected =
                                     oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
 
@@ -109,6 +106,8 @@ class ListActivity : AppCompatActivity() {
                                 while (iterator.hasNext()) {
                                     val record = iterator.next() as Record
                                     roomModel.delete(record)
+
+                                    invalidateOptionsMenu()
                                 }
 
                                 oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
@@ -142,6 +141,9 @@ class ListActivity : AppCompatActivity() {
                             ) { dialog, _ ->
                                 roomModel.deleteAll()
 
+                                invalidateOptionsMenu()
+                                visibleDeleteAll = false
+
                                 oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
                                 dialog.dismiss()
 
@@ -151,7 +153,7 @@ class ListActivity : AppCompatActivity() {
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
-                            .setNegativeButton(
+                            .setNeutralButton(
                                 R.string.cancelar
                             ) { dialog, _ ->
                                 dialog.dismiss()
@@ -164,7 +166,7 @@ class ListActivity : AppCompatActivity() {
                     else -> true
                 }
             }
-        })
+        }, this)
 
         binding.listContent.recycler.addItemDecoration(
             DividerItemDecoration(
@@ -255,7 +257,8 @@ class ListActivity : AppCompatActivity() {
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(colorPrimaryVariant))
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 invalidateOptionsMenu()
-                visibility = true
+                visibleDelete = true
+                visibleDeleteAll = false
             }
 
             onUpdateSelection { selectedCount ->
@@ -269,7 +272,8 @@ class ListActivity : AppCompatActivity() {
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(colorPrimary))
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 invalidateOptionsMenu()
-                visibility = false
+                visibleDelete = false
+                visibleDeleteAll = true
             }
         }
     }
