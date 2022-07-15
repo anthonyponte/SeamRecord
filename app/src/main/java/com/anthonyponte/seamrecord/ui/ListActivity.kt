@@ -39,8 +39,8 @@ import java.util.*
 
 class ListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityListBinding
-    private lateinit var oneAdapter: OneAdapter
-    private val roomModel: RoomViewModel by viewModels {
+    private lateinit var adapter: OneAdapter
+    private val model: RoomViewModel by viewModels {
         RecordViewModelFactory((application as SeamRecordApp).repository)
     }
     private var colorBackground: Int = 0
@@ -79,13 +79,13 @@ class ListActivity : AppCompatActivity() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     android.R.id.home -> {
-                        oneAdapter.modules.itemSelectionModule?.actions?.clearSelection()
+                        adapter.modules.itemSelectionModule?.actions?.clearSelection()
                         return true
                     }
 
                     R.id.eliminar -> {
                         val seleccionados =
-                            oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems()?.size
+                            adapter.modules.itemSelectionModule?.actions?.getSelectedItems()?.size
 
                         MaterialAlertDialogBuilder(this@ListActivity)
                             .setTitle(getString(R.string.eliminar_seleccionados, seleccionados))
@@ -99,18 +99,18 @@ class ListActivity : AppCompatActivity() {
                                 R.string.eliminar
                             ) { dialog, _ ->
                                 val selected =
-                                    oneAdapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
+                                    adapter.modules.itemSelectionModule?.actions?.getSelectedItems() as List<Any>
 
                                 val iterator = selected.iterator()
 
                                 while (iterator.hasNext()) {
                                     val record = iterator.next() as Record
-                                    roomModel.delete(record)
+                                    model.delete(record)
 
                                     invalidateOptionsMenu()
                                 }
 
-                                oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
+                                adapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
                                 dialog.dismiss()
 
                                 Snackbar.make(
@@ -139,12 +139,9 @@ class ListActivity : AppCompatActivity() {
                             .setPositiveButton(
                                 R.string.eliminar_todo
                             ) { dialog, _ ->
-                                roomModel.deleteAll()
+                                model.deleteAll()
 
-                                invalidateOptionsMenu()
-                                visibleDeleteAll = false
-
-                                oneAdapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
+                                adapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
                                 dialog.dismiss()
 
                                 Snackbar.make(
@@ -181,7 +178,7 @@ class ListActivity : AppCompatActivity() {
                     val inspection =
                         intent?.getSerializableExtra(MainActivity.RECORD_VALUE) as Record
 
-                    roomModel.insert(inspection)
+                    model.insert(inspection)
                 }
             }
 
@@ -190,14 +187,17 @@ class ListActivity : AppCompatActivity() {
             launcher.launch(intent)
         }
 
-        oneAdapter = OneAdapter(binding.listContent.recycler) {
+        adapter = OneAdapter(binding.listContent.recycler) {
             itemModules += RecordModule()
             emptinessModule = EmptinessModuleImpl()
             itemSelectionModule = RecordSelectionModuleImpl()
         }
 
-        roomModel.getAll.observe(this) { records ->
-            oneAdapter.setItems(records)
+        model.getAll.observe(this) { records ->
+            visibleDeleteAll = records.isNotEmpty()
+            invalidateOptionsMenu()
+
+            adapter.setItems(records)
         }
     }
 
@@ -256,13 +256,15 @@ class ListActivity : AppCompatActivity() {
             onStartSelection {
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(colorPrimaryVariant))
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                invalidateOptionsMenu()
+
                 visibleDelete = true
                 visibleDeleteAll = false
+
+                invalidateOptionsMenu()
             }
 
             onUpdateSelection { selectedCount ->
-                if (oneAdapter.modules.itemSelectionModule?.actions?.isSelectionActive() == true) {
+                if (adapter.modules.itemSelectionModule?.actions?.isSelectionActive() == true) {
                     supportActionBar?.title = selectedCount.toString()
                 }
             }
@@ -271,9 +273,11 @@ class ListActivity : AppCompatActivity() {
                 supportActionBar?.title = getString(R.string.app_name)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(colorPrimary))
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                invalidateOptionsMenu()
+
                 visibleDelete = false
                 visibleDeleteAll = true
+
+                invalidateOptionsMenu()
             }
         }
     }

@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.core.view.MenuProvider
 import com.anthonyponte.seamrecord.R
 import com.anthonyponte.seamrecord.viewmodel.Record
 import com.anthonyponte.seamrecord.databinding.ActivityMainBinding
@@ -38,68 +40,73 @@ class MainActivity : AppCompatActivity() {
         colorSuccess = MaterialColors.getColor(root, R.attr.colorSuccess)
         colorWarning = MaterialColors.getColor(root, R.attr.colorWarning)
 
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_main, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    android.R.id.home -> {
+                        navigateUpTo(Intent(this@MainActivity, ListActivity::class.java))
+                        return true
+                    }
+
+                    R.id.limpiar -> {
+                        binding.mainContent.etEspesorCuerpo.text?.clear()
+                        binding.mainContent.etEspesorTapa.text?.clear()
+                        binding.mainContent.etGanchoCuerpo.text?.clear()
+                        binding.mainContent.etGanchoTapa.text?.clear()
+                        binding.mainContent.etAlturaCierre.text?.clear()
+                        binding.mainContent.etEspesorCierre.text?.clear()
+
+                        binding.mainContent.etEspesorCuerpo.requestFocusFromTouch()
+                    }
+
+                    R.id.guardar -> {
+                        if (isNotEmpty()) {
+                            val record = Record(
+                                Instant.now(),
+                                binding.mainContent.etEspesorCuerpo.text.toString().toDouble(),
+                                binding.mainContent.etEspesorTapa.text.toString().toDouble(),
+                                binding.mainContent.etGanchoCuerpo.text.toString().toDouble(),
+                                binding.mainContent.etGanchoTapa.text.toString().toDouble(),
+                                binding.mainContent.etAlturaCierre.text.toString().toDouble(),
+                                binding.mainContent.etEspesorCierre.text.toString().toDouble(),
+                                binding.mainContent.mainMeasures.tvTraslape.text.toString()
+                                    .toDouble(),
+                                binding.mainContent.mainMeasures.tvSuperposicion.text.toString()
+                                    .toDouble(),
+                                binding.mainContent.mainMeasures.tvPenetracion.text.toString()
+                                    .toDouble(),
+                                binding.mainContent.mainMeasures.tvEspacioLibre.text.toString()
+                                    .toDouble(),
+                                binding.mainContent.mainMeasures.tvCompacidad.text.toString()
+                                    .toDouble()
+                            )
+
+                            val intent = Intent().apply {
+                                putExtra(RECORD_VALUE, record)
+                            }
+
+                            setResult(RESULT_OK, intent)
+                            finish()
+                        } else {
+                            finish()
+                        }
+                        return true
+                    }
+                    else -> true
+                }
+            }
+        })
+
         binding.mainContent.etEspesorCuerpo.addTextChangedListener(watcher)
         binding.mainContent.etEspesorTapa.addTextChangedListener(watcher)
         binding.mainContent.etGanchoCuerpo.addTextChangedListener(watcher)
         binding.mainContent.etGanchoTapa.addTextChangedListener(watcher)
         binding.mainContent.etAlturaCierre.addTextChangedListener(watcher)
         binding.mainContent.etEspesorCierre.addTextChangedListener(watcher)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                navigateUpTo(Intent(this, ListActivity::class.java))
-                return true
-            }
-
-            R.id.limpiar ->{
-                binding.mainContent.etEspesorCuerpo.text?.clear()
-                binding.mainContent.etEspesorTapa.text?.clear()
-                binding.mainContent.etGanchoCuerpo.text?.clear()
-                binding.mainContent.etGanchoTapa.text?.clear()
-                binding.mainContent.etAlturaCierre.text?.clear()
-                binding.mainContent.etEspesorCierre.text?.clear()
-
-                binding.mainContent.etEspesorCuerpo.requestFocusFromTouch()
-            }
-
-            R.id.guardar -> {
-                if (isNotEmpty()) {
-                    val record = Record(
-                        Instant.now(),
-                        binding.mainContent.etEspesorCuerpo.text.toString().toDouble(),
-                        binding.mainContent.etEspesorTapa.text.toString().toDouble(),
-                        binding.mainContent.etGanchoCuerpo.text.toString().toDouble(),
-                        binding.mainContent.etGanchoTapa.text.toString().toDouble(),
-                        binding.mainContent.etAlturaCierre.text.toString().toDouble(),
-                        binding.mainContent.etEspesorCierre.text.toString().toDouble(),
-                        binding.mainContent.mainMeasures.tvTraslape.text.toString().toDouble(),
-                        binding.mainContent.mainMeasures.tvSuperposicion.text.toString().toDouble(),
-                        binding.mainContent.mainMeasures.tvPenetracion.text.toString().toDouble(),
-                        binding.mainContent.mainMeasures.tvEspacioLibre.text.toString().toDouble(),
-                        binding.mainContent.mainMeasures.tvCompacidad.text.toString().toDouble()
-                    )
-
-                    val intent = Intent().apply {
-                        putExtra(RECORD_VALUE, record)
-                    }
-
-                    setResult(RESULT_OK, intent)
-                    finish()
-                } else {
-                    finish()
-                }
-
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private val watcher = object : TextWatcher {
