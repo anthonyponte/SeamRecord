@@ -15,8 +15,8 @@ class RecordRepository(private val recordDao: RecordDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun delete(record: Record) {
-        recordDao.delete(record)
+    suspend fun delete(ids: List<Long>) {
+        recordDao.delete(ids)
     }
 
     @Suppress("RedundantSuspendModifier")

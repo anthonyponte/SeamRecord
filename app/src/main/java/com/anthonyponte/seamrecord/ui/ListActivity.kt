@@ -103,12 +103,13 @@ class ListActivity : AppCompatActivity() {
 
                                 val iterator = selected.iterator()
 
+                                lateinit var ids: List<Long>
                                 while (iterator.hasNext()) {
                                     val record = iterator.next() as Record
-                                    model.delete(record)
-
-                                    invalidateOptionsMenu()
+                                    ids = listOf(record.id)
                                 }
+                                model.delete(ids)
+
 
                                 adapter.modules.itemSelectionModule?.actions?.removeSelectedItems()
                                 dialog.dismiss()
@@ -194,10 +195,16 @@ class ListActivity : AppCompatActivity() {
         }
 
         model.getAll.observe(this) { records ->
-            visibleDeleteAll = records.isNotEmpty()
-            invalidateOptionsMenu()
+            records?.let {
+                visibleDeleteAll = records.isNotEmpty()
+                invalidateOptionsMenu()
 
-            adapter.setItems(records)
+                println("size " + records.size)
+                println("isNotEmpty " + records.isNotEmpty())
+                println("isEmpty " + records.isEmpty())
+
+                adapter.setItems(records)
+            }
         }
     }
 
@@ -259,7 +266,6 @@ class ListActivity : AppCompatActivity() {
 
                 visibleDelete = true
                 visibleDeleteAll = false
-
                 invalidateOptionsMenu()
             }
 
@@ -276,7 +282,6 @@ class ListActivity : AppCompatActivity() {
 
                 visibleDelete = false
                 visibleDeleteAll = true
-
                 invalidateOptionsMenu()
             }
         }

@@ -14,8 +14,8 @@ class RoomViewModel(private val repository: RecordRepository) : ViewModel() {
         repository.insert(record)
     }
 
-    fun delete(record: Record) = viewModelScope.launch {
-        repository.delete(record)
+    fun delete(ids: List<Long>) = viewModelScope.launch {
+        repository.delete(ids)
     }
 
     fun deleteAll() = viewModelScope.launch {

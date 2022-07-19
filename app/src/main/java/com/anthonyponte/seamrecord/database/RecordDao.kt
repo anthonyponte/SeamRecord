@@ -1,7 +1,6 @@
 package com.anthonyponte.seamrecord.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.anthonyponte.seamrecord.viewmodel.Record
@@ -15,8 +14,8 @@ interface RecordDao {
     @Insert
     suspend fun insert(record: Record)
 
-    @Delete
-    suspend fun delete(record: Record)
+    @Query("DELETE FROM records WHERE id IN (:ids)")
+    suspend fun delete(ids: List<Long>)
 
     @Query("DELETE FROM records")
     suspend fun deleteAll()
